@@ -23,7 +23,7 @@ get_library_source() {
     ;;
   dav1d)
     SOURCE_REPO_URL="https://github.com/arthenica/dav1d"
-    SOURCE_ID="1.2.1"
+    SOURCE_ID="1.5.1"
     SOURCE_TYPE="TAG"
     ;;
   expat)
@@ -93,7 +93,7 @@ get_library_source() {
     ;;
   libaom)
     SOURCE_REPO_URL="https://github.com/arthenica/libaom"
-    SOURCE_ID="v3.6.1"
+    SOURCE_ID="v3.12.0"
     SOURCE_TYPE="TAG"
     ;;
   libass)
@@ -153,12 +153,12 @@ get_library_source() {
     ;;
   libvpx)
     SOURCE_REPO_URL="https://github.com/arthenica/libvpx"
-    SOURCE_ID="v1.13.0"
+    SOURCE_ID="v1.15.0"
     SOURCE_TYPE="TAG"
     ;;
   libwebp)
     SOURCE_REPO_URL="https://github.com/arthenica/libwebp"
-    SOURCE_ID="v1.3.1"
+    SOURCE_ID="v1.5.0"
     SOURCE_TYPE="TAG"
     ;;
   libxml2)
@@ -188,7 +188,7 @@ get_library_source() {
     ;;
   opus)
     SOURCE_REPO_URL="https://github.com/arthenica/opus"
-    SOURCE_ID="v1.4"
+    SOURCE_ID="v1.5.2"
     SOURCE_TYPE="TAG"
     ;;
   rubberband)

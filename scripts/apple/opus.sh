@@ -15,7 +15,6 @@ fi
   --enable-static \
   --enable-rtcd \
   --enable-asm \
-  --enable-check-asm \
   --enable-custom-modes \
   --disable-shared \
   --disable-fast-install \

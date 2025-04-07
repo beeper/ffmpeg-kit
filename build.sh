@@ -18,6 +18,9 @@ set -e
   --enable-ios-bzip2 \
   --enable-ios-libiconv \
   --enable-libwebp \
+  --enable-dav1d \
+  --enable-lame \
+  --enable-libogg \
   --no-bitcode
 
 FRAMEWORK_NAMES=(ffmpegkit libavcodec libavdevice libavfilter libavformat libavutil libswresample libswscale)

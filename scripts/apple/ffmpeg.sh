@@ -543,13 +543,21 @@ ${SED_INLINE} 's/static int av_log_level/__thread int av_log_level/g' "${BASEDIR
   --enable-avfoundation \
   --enable-audiotoolbox \
   --enable-videotoolbox \
-  --enable-decoder=libvpx_vp9,opus,h264_videotoolbox \
-  --enable-demuxer=matroska,ogg \
-  --enable-encoder=hevc_videotoolbox,h264_videotoolbox,aac_at,opus,libwebp_anim \
-  --enable-muxer=mov,adts \
+  --enable-decoder=libvpx_vp9,libopus,aac_at,alac_at,av1,flac,flv,h264,hevc,libdav1d,libvpx_vp8,mjpeg,mp3,prores \
+  --enable-demuxer=matroska,ogg,aac,av1,avi,flv,h264,hevc,avif \
+  --enable-encoder=hevc_videotoolbox,h264_videotoolbox,aac_at,libwebp_anim,libmp3lame,libopus \
+  --enable-muxer=mov,adts,mp4,mp3,ogg \
   --enable-protocol=file \
   --enable-filter=scale,null,format,anull,aresample,drawtext,color \
+  --enable-hwaccel=h264_videotoolbox,hevc_videotoolbox,mpeg4_videotoolbox,prores_videotoolbox \
+  --enable-parser=aac,flac,av1,h264,hevc,opus,vp8,vp9,webp,hdr \
   --enable-lto \
+  --disable-indevs \
+  --disable-outdevs \
+  --enable-libmp3lame \
+  --enable-libopus \
+  --enable-libvpx \
+  --enable-libwebp \
   ${CONFIGURE_POSTFIX} 1>>"${BASEDIR}"/build.log 2>&1
 
 if [[ $? -ne 0 ]]; then
