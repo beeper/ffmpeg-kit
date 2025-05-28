@@ -24,8 +24,8 @@ set -e
   --no-bitcode
 
 FRAMEWORK_NAMES=(ffmpegkit libavcodec libavdevice libavfilter libavformat libavutil libswresample libswscale)
-XROS_SIM_PLATFORM=xrossim
-XROS_PLATFORM=xros
+XROS_SIM_PLATFORM=visionossim
+XROS_PLATFORM=visionos
 XROS_MINOS=1.0
 XROS_SDK=1.0
 

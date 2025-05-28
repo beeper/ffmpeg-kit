@@ -83,8 +83,8 @@ i386)
   BITCODE_FLAGS=""
   ;;
 x86-64)
-  TARGET_CPU="x86_64"
-  TARGET_ARCH="x86_64"
+TARGET_CPU="x86-64"
+  TARGET_ARCH="x86-64"
   ASM_OPTIONS=" --disable-neon --disable-asm"
   BITCODE_FLAGS=""
   ;;
@@ -543,19 +543,12 @@ ${SED_INLINE} 's/static int av_log_level/__thread int av_log_level/g' "${BASEDIR
   --enable-avfoundation \
   --enable-audiotoolbox \
   --enable-videotoolbox \
-  --enable-decoder=libvpx_vp9,libopus,aac_at,alac_at,av1,flac,flv,h264,hevc,libdav1d,libvpx_vp8,mjpeg,mp3,prores \
-  --enable-demuxer=matroska,ogg,aac,av1,avi,flv,h264,hevc,avif \
-  --enable-encoder=hevc_videotoolbox,h264_videotoolbox,aac_at,libwebp_anim,libmp3lame,libopus \
-  --enable-muxer=mov,adts,mp4,mp3,ogg \
-  --enable-protocol=file \
-  --enable-filter=scale,null,format,anull,aresample,drawtext,color \
-  --enable-hwaccel=h264_videotoolbox,hevc_videotoolbox,mpeg4_videotoolbox,prores_videotoolbox \
-  --enable-parser=aac,flac,av1,h264,hevc,opus,vp8,vp9,webp,hdr \
   --enable-lto \
   --enable-libmp3lame \
   --enable-libopus \
   --enable-libvpx \
   --enable-libwebp \
+  --enable-indev=lavfi \
   ${CONFIGURE_POSTFIX} 1>>"${BASEDIR}"/build.log 2>&1
 
 if [[ $? -ne 0 ]]; then
@@ -665,7 +658,7 @@ overwrite_file "${BASEDIR}"/src/ffmpeg/libavutil/x86/asm.h "${FFMPEG_LIBRARY_PAT
 overwrite_file "${BASEDIR}"/src/ffmpeg/libavutil/x86/timer.h "${FFMPEG_LIBRARY_PATH}"/include/libavutil/x86/timer.h 1>>"${BASEDIR}"/build.log 2>&1
 overwrite_file "${BASEDIR}"/src/ffmpeg/libavutil/arm/timer.h "${FFMPEG_LIBRARY_PATH}"/include/libavutil/arm/timer.h 1>>"${BASEDIR}"/build.log 2>&1
 overwrite_file "${BASEDIR}"/src/ffmpeg/libavutil/aarch64/timer.h "${FFMPEG_LIBRARY_PATH}"/include/libavutil/aarch64/timer.h 1>>"${BASEDIR}"/build.log 2>&1
-overwrite_file "${BASEDIR}"/src/ffmpeg/libavutil/x86/emms.h "${FFMPEG_LIBRARY_PATH}"/include/libavutil/x86/emms.h 1>>"${BASEDIR}"/build.log 2>&1
+overwrite_file "${BASEDIR}"/src/ffmpeg/libavutil/emms.h "${FFMPEG_LIBRARY_PATH}"/include/libavutil/emms.h 1>>"${BASEDIR}"/build.log 2>&1
 
 if [ $? -eq 0 ]; then
   echo "ok"
