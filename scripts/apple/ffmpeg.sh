@@ -552,8 +552,6 @@ ${SED_INLINE} 's/static int av_log_level/__thread int av_log_level/g' "${BASEDIR
   --enable-hwaccel=h264_videotoolbox,hevc_videotoolbox,mpeg4_videotoolbox,prores_videotoolbox \
   --enable-parser=aac,flac,av1,h264,hevc,opus,vp8,vp9,webp,hdr \
   --enable-lto \
-  --disable-indevs \
-  --disable-outdevs \
   --enable-libmp3lame \
   --enable-libopus \
   --enable-libvpx \
