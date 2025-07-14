@@ -489,6 +489,42 @@ ${SED_INLINE} 's/static int av_log_level/__thread int av_log_level/g' "${BASEDIR
 
 ###################################################################
 
+CUSTOM_FLAGS=""
+CUSTOM_DECODERS=(libvpx_vp9 libopus aac_at alac_at av1 flac flv h264 hevc libdav1d libvpx_vp8 mjpeg mp3 prores)
+for decoder in "${CUSTOM_DECODERS[@]}"; do
+    CUSTOM_FLAGS+="--enable-decoder=${decoder} "
+done
+
+CUSTOM_ENCODERS=(hevc_videotoolbox h264_videotoolbox aac_at libwebp_anim libmp3lame libopus)
+for encoder in "${CUSTOM_ENCODERS[@]}"; do
+    CUSTOM_FLAGS+="--enable-encoder=${encoder} "
+done
+
+CUSTOM_DEMUXERS=(matroska ogg aac av1 avi flv h264 hevc)
+for demuxer in "${CUSTOM_DEMUXERS[@]}"; do
+    CUSTOM_FLAGS+="--enable-demuxer=${demuxer} "
+done
+
+CUSTOM_MUXERS=(mov adts mp4 mp3 ogg)
+for muxer in "${CUSTOM_MUXERS[@]}"; do
+    CUSTOM_FLAGS+="--enable-muxer=${muxer} "
+done
+
+CUSTOM_FILTERS=(scale null format anull aresample color)
+for filter in "${CUSTOM_FILTERS[@]}"; do
+    CUSTOM_FLAGS+="--enable-filter=${filter} "
+done
+
+CUSTOM_HWACCELS=(h264_videotoolbox hevc_videotoolbox mpeg4_videotoolbox prores_videotoolbox)
+for hwaccel in "${CUSTOM_HWACCELS[@]}"; do
+    CUSTOM_FLAGS+="--enable-hwaccel=${hwaccel} "
+done
+
+CUSTOM_PARSERS=(aac flac av1 h264 hevc opus vp8 vp9 webp hdr)
+for parser in "${CUSTOM_PARSERS[@]}"; do
+    CUSTOM_FLAGS+="--enable-parser=${parser} "
+done
+
 ./configure \
   --cross-prefix="${HOST}-" \
   --sysroot="${SDK_PATH}" \
@@ -543,6 +579,8 @@ ${SED_INLINE} 's/static int av_log_level/__thread int av_log_level/g' "${BASEDIR
   --enable-avfoundation \
   --enable-audiotoolbox \
   --enable-videotoolbox \
+  ${CUSTOM_FLAGS} \
+  --enable-protocol=file \
   --enable-lto \
   --enable-libmp3lame \
   --enable-libopus \
