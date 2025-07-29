@@ -153,7 +153,10 @@ fi
 # PROCESS FULL OPTION AS LAST OPTION
 if [[ -n ${BUILD_FULL} ]]; then
   for library in {0..61}; do
-    if [ ${GPL_ENABLED} == "yes" ]; then
+    libname="$(get_library_name $library)"
+    if [ "$libname" = gnutls ]; then
+      :
+    elif [ ${GPL_ENABLED} == "yes" ]; then
       enable_library "$(get_library_name $library)" 1
     else
       if [[ $(is_gpl_licensed $library) -eq 1 ]]; then

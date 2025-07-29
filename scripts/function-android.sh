@@ -390,6 +390,9 @@ get_cxxflags() {
   rubberband | srt | tesseract | zimg)
     echo "-std=c++11 ${OPTIMIZATION_FLAGS}"
     ;;
+  tiff)
+    echo "-std=gnu99 -fno-exceptions -fno-rtti ${OPTIMIZATION_FLAGS}"
+    ;;
   *)
     echo "-std=c++11 -fno-exceptions -fno-rtti ${OPTIMIZATION_FLAGS}"
     ;;
