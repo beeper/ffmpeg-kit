@@ -587,6 +587,7 @@ done
   --enable-libvpx \
   --enable-libwebp \
   --enable-indev=lavfi \
+  --disable-i8mm \
   ${CONFIGURE_POSTFIX} 1>>"${BASEDIR}"/build.log 2>&1
 
 if [[ $? -ne 0 ]]; then
