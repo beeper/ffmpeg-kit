@@ -31,6 +31,7 @@ echo -e "INFO: Build options: $*\n" 1>>"${BASEDIR}"/build.log 2>&1
 export GPL_ENABLED="no"
 DISPLAY_HELP=""
 BUILD_FULL=""
+BUILD_RELEASE=""
 BUILD_TYPE_ID=""
 BUILD_VERSION=$(git describe --tags --always 2>>"${BASEDIR}"/build.log)
 
@@ -104,6 +105,10 @@ while [ ! $# -eq 0 ]; do
   --full)
     BUILD_FULL="1"
     ;;
+  --full-release)
+    BUILD_FULL="1"
+    BUILD_RELEASE="1"
+    ;;
   --enable-gpl)
     export GPL_ENABLED="yes"
     ;;
@@ -153,7 +158,10 @@ fi
 # PROCESS FULL OPTION AS LAST OPTION
 if [[ -n ${BUILD_FULL} ]]; then
   for library in {0..61}; do
-    if [ ${GPL_ENABLED} == "yes" ]; then
+    libname="$(get_library_name $library)"
+    if [ "$libname" = gnutls ]; then
+      :
+    elif [ ${GPL_ENABLED} == "yes" ]; then
       enable_library "$(get_library_name $library)" 1
     else
       if [[ $(is_gpl_licensed $library) -eq 1 ]]; then
@@ -373,6 +381,13 @@ if [[ -n ${ANDROID_ARCHITECTURES} ]]; then
     if [ $? -ne 0 ]; then
       echo -e "failed\n"
       exit 1
+    fi
+    if [[ ${BUILD_RELEASE} -eq 1 ]]; then
+      ./gradlew publishReleasePublicationToGitHubPackagesRepository 1>>"${BASEDIR}"/build.log 2>&1
+      if [ $? -ne 0 ]; then
+        echo -e "release failed, check build.log for details\n"
+        exit 1
+      fi
     fi
 
     # COPY ANDROID ARCHIVE TO PREBUILT DIRECTORY

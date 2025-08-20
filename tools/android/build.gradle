@@ -1,15 +1,16 @@
 apply plugin: 'com.android.library'
+apply plugin: 'maven-publish'
 
 android {
     if (project.android.hasProperty("namespace")) {
         namespace 'com.arthenica.ffmpegkit'
     }
-    compileSdk 33
+    compileSdk 35
     ndkVersion "22.1.7171670"
 
     defaultConfig {
         minSdk 24
-        targetSdk 33
+        targetSdk 35
         versionCode 240600
         versionName "6.0"
         project.archivesBaseName = "ffmpeg-kit"
@@ -63,4 +64,30 @@ dependencies {
     api 'com.arthenica:smart-exception-java:0.2.1'
     testImplementation "androidx.test.ext:junit:1.1.5"
     testImplementation 'org.json:json:20230618'
+}
+
+// GitHub Packages publishing configuration
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+
+                groupId = 'com.arthenica'
+                artifactId = 'ffmpeg-kit-full'
+                version = "6.0-3"
+            }
+        }
+
+        repositories {
+            maven {
+                name = "GitHubPackages"
+                url = uri("https://maven.pkg.github.com/beeper/beeper-android")
+                credentials {
+                    username = System.getenv("GITHUB_USERNAME") ?: providers.gradleProperty("githubUsername")
+                    password = System.getenv("GITHUB_TOKEN") ?: providers.gradleProperty("githubPassword")
+                }
+            }
+        }
+    }
 }

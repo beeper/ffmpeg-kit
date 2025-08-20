@@ -1,8 +1,43 @@
+# 16KB Page Size Update
+This fork only aims to make ffmpeg-kit compatible with new android versions (API 35) which request all binaries to be rebuilt.
+Google request developers to build new with new r27 and r28 ndk but ffmpeg-kit has its own NDK compatibility table which supports only upto r25.</p>
+<i>Edit: As original devs said, master branch has been tested upto NDK r27.</i>
+
+</p>
+Lucky for us, there is a version of ndk r23 and r25 in CI which supports 16KB page sizes too.
+make sure to download this ndk version and compile ffmpeg-kit with this ndk only.<br/>
+NDK : <a href="https://ci.android.com/builds/branches/aosp-ndk-release-r23/grid">R23</a> <a href="https://ci.android.com/builds/branches/aosp-ndk-r25-release/grid">R25</a>
+</p>
+You can find all details related to this update here. https://developer.android.com/guide/practices/page-sizes
+</br>
+
 # FFmpegKit ![GitHub release](https://img.shields.io/badge/release-v6.0-blue.svg) ![Maven Central](https://img.shields.io/maven-central/v/com.arthenica/ffmpeg-kit-min) ![CocoaPods](https://img.shields.io/cocoapods/v/ffmpeg-kit-ios-min) ![pub](https://img.shields.io/pub/v/ffmpeg_kit_flutter.svg) ![npm](https://img.shields.io/npm/v/ffmpeg-kit-react-native.svg)
+
+## Notice
+FFmpegKit has been officially retired. There will be no further `ffmpeg-kit` releases.
+
+See [Saying Goodbye to FFmpegKit @ medium](https://medium.com/@tanersener/saying-goodbye-to-ffmpegkit-33ae939767e1) to learn why we made this decision.
+
+All previously released `ffmpeg-kit` binaries will be removed according to the following schedule.
+
+| FFmpegKit Version |  Available Until   |
+|:-----------------:|:------------------:|
+|   Less than 6.0   | February 1st, 2025 |
+|        6.0        |  April 1st, 2025   |
+
+Thank you for your support and interest in this project.
+
+If you're looking for a replacement, please check out the community-maintained forks available through the package managers below.
+
+|                          Platform                           |
+|:-------------------------------------------------------:|
+| [Android](https://central.sonatype.com/search?q=ffmpeg+kit) |
+| [Flutter](https://pub.dev/packages?q=ffmpeg+kit) |
+| [React Native](https://www.npmjs.com/search?q=ffmpeg%20kit) |
 
 <img src="https://github.com/arthenica/ffmpeg-kit/blob/main/docs/assets/ffmpeg-kit-icon-v9.png" width="240">
 
-`FFmpegKit` is a collection of tools to use `FFmpeg` in `Android`, `iOS`, `Linux`, `macOS`, `tvOS`, `Flutter` and `React Native` applications.
+`FFmpegKit` is a collection of tools to use `FFmpeg`<sup>1</sup> in `Android`, `iOS`, `Linux`, `macOS`, `tvOS`, `Flutter` and `React Native` applications.
 
 It includes scripts to build `FFmpeg` native libraries, a wrapper library to run `FFmpeg`/`FFprobe` commands in
  applications and 8 prebuilt binary packages available at [Github](https://github.com/arthenica/ffmpeg-kit/releases),
@@ -219,11 +254,15 @@ that you seek legal advice first. See [FFmpeg Patent Mini-FAQ](https://ffmpeg.or
 distribute that library, then you are subject to pay MPEG LA licensing fees. Refer to
 [OpenH264 FAQ](https://www.openh264.org/faq.html) page for the details.
 
-### 16. Contributing
+### 16. Trademarks
+
+<sup>1</sup> `FFmpeg` is a trademark of [Fabrice Bellard](http://www.bellard.org/). `FFmpegKit` is an independent project and not affiliated with the `FFmpeg` trademark holder.
+
+### 17. Contributing
 
 See our [CONTRIBUTING](CONTRIBUTING.md) guide.
 
-### 17. See Also
+### 18. See Also
 
 - [FFmpeg API Documentation](https://ffmpeg.org/doxygen/4.0/index.html)
 - [FFmpeg Wiki](https://trac.ffmpeg.org/wiki/WikiStart)
