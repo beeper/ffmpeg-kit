@@ -489,41 +489,78 @@ ${SED_INLINE} 's/static int av_log_level/__thread int av_log_level/g' "${BASEDIR
 
 ###################################################################
 
-CUSTOM_FLAGS=""
-CUSTOM_DECODERS=(libvpx_vp9 libopus aac_at alac_at av1 flac flv h264 hevc libdav1d libvpx_vp8 mjpeg mp3 prores)
-for decoder in "${CUSTOM_DECODERS[@]}"; do
-    CUSTOM_FLAGS+="--enable-decoder=${decoder} "
-done
+# Beeper iOS only builds the components its own ffmpeg/ffprobe command lines and
+# its on-device bridges (go.mau.fi/util/ffmpeg) use; --disable-everything turns
+# everything else off. Check every MediaTranscoder and ffmpeg.Convert* caller
+# before removing anything here.
+CUSTOM_FLAGS="--disable-everything "
+CUSTOM_DECODERS=(
+  # video
+  h264 hevc vp8 vp9 libvpx_vp8 libvpx_vp9 libdav1d av1 mpeg4 h263 h263p flv mpeg1video mpeg2video
+  # lavfi input device (color source) hands frames to ffmpeg as wrapped_avframe
+  wrapped_avframe
+  msmpeg4v3 wmv1 wmv2 wmv3 vc1 theora mjpeg prores rawvideo
+  # images
+  png apng gif webp bmp
+  # audio
+  aac aac_latm aac_at alac alac_at mp3float mp3 mp2float mp2 opus libopus vorbis flac speex amrnb amrwb
+  ac3 eac3 wmav1 wmav2 gsm gsm_ms adpcm_ms adpcm_ima_wav adpcm_ima_qt
+  pcm_alaw pcm_mulaw pcm_s8 pcm_u8 pcm_s16le pcm_s16be pcm_s24le pcm_s24be pcm_s32le pcm_s32be
+  pcm_f32le pcm_f32be pcm_f64le pcm_f64be
+  # subtitles (auto-mapped to mov_text when the output is mp4)
+  subrip ass ssa webvtt movtext text
+)
+CUSTOM_ENCODERS=(
+  aac aac_at libopus libmp3lame pcm_s16le
+  h264_videotoolbox hevc_videotoolbox libvpx_vp9
+  libwebp_anim libwebp png apng gif mjpeg rawvideo
+  movtext
+)
+CUSTOM_DEMUXERS=(
+  mov matroska ogg mp3 aac ac3 eac3 wav w64 flac amr caf aiff avi flv mpegts mpegps asf
+  h264 hevc av1 ivf m4v mpegvideo
+  gif apng image2 image2pipe image_png_pipe image_jpeg_pipe image_webp_pipe image_gif_pipe image_bmp_pipe
+)
+CUSTOM_MUXERS=(mov mp4 ipod adts mp3 ogg wav webm gif webp image2 apng rawvideo)
+CUSTOM_FILTERS=(
+  null anull format aformat scale aresample
+  trim atrim fps transpose hflip vflip rotate apad pan
+  crop setsar split palettegen paletteuse loudnorm color
+  # go.mau.fi/util/ffmpeg/waveform (Viber voice messages)
+  showwavespic
+)
+CUSTOM_HWACCELS=(
+  h263_videotoolbox h264_videotoolbox hevc_videotoolbox mpeg1_videotoolbox mpeg2_videotoolbox
+  mpeg4_videotoolbox prores_videotoolbox vp9_videotoolbox
+)
+CUSTOM_PARSERS=(
+  aac aac_latm ac3 amr av1 flac gif gsm h263 h264 hevc mjpeg mpeg4video mpegaudio mpegvideo opus
+  png vc1 vorbis vp8 vp9 webp
+)
+CUSTOM_BSFS=(
+  aac_adtstoasc extract_extradata h264_mp4toannexb hevc_mp4toannexb vp9_superframe vp9_superframe_split
+  av1_frame_split av1_frame_merge null
+)
+CUSTOM_PROTOCOLS=(file pipe)
+CUSTOM_INDEVS=(lavfi)
 
-CUSTOM_ENCODERS=(hevc_videotoolbox h264_videotoolbox aac_at libwebp_anim libmp3lame libopus)
-for encoder in "${CUSTOM_ENCODERS[@]}"; do
-    CUSTOM_FLAGS+="--enable-encoder=${encoder} "
-done
-
-CUSTOM_DEMUXERS=(matroska ogg aac av1 avi flv h264 hevc)
-for demuxer in "${CUSTOM_DEMUXERS[@]}"; do
-    CUSTOM_FLAGS+="--enable-demuxer=${demuxer} "
-done
-
-CUSTOM_MUXERS=(mov adts mp4 mp3 ogg)
-for muxer in "${CUSTOM_MUXERS[@]}"; do
-    CUSTOM_FLAGS+="--enable-muxer=${muxer} "
-done
-
-CUSTOM_FILTERS=(scale null format anull aresample color)
-for filter in "${CUSTOM_FILTERS[@]}"; do
-    CUSTOM_FLAGS+="--enable-filter=${filter} "
-done
-
-CUSTOM_HWACCELS=(h264_videotoolbox hevc_videotoolbox mpeg4_videotoolbox prores_videotoolbox)
-for hwaccel in "${CUSTOM_HWACCELS[@]}"; do
-    CUSTOM_FLAGS+="--enable-hwaccel=${hwaccel} "
-done
-
-CUSTOM_PARSERS=(aac flac av1 h264 hevc opus vp8 vp9 webp hdr)
-for parser in "${CUSTOM_PARSERS[@]}"; do
-    CUSTOM_FLAGS+="--enable-parser=${parser} "
-done
+add_custom_flags() {
+  local KIND=$1
+  shift
+  for COMPONENT in "$@"; do
+    CUSTOM_FLAGS+="--enable-${KIND}=${COMPONENT} "
+  done
+}
+add_custom_flags decoder "${CUSTOM_DECODERS[@]}"
+add_custom_flags encoder "${CUSTOM_ENCODERS[@]}"
+add_custom_flags demuxer "${CUSTOM_DEMUXERS[@]}"
+add_custom_flags muxer "${CUSTOM_MUXERS[@]}"
+add_custom_flags filter "${CUSTOM_FILTERS[@]}"
+add_custom_flags hwaccel "${CUSTOM_HWACCELS[@]}"
+add_custom_flags parser "${CUSTOM_PARSERS[@]}"
+add_custom_flags bsf "${CUSTOM_BSFS[@]}"
+add_custom_flags protocol "${CUSTOM_PROTOCOLS[@]}"
+add_custom_flags indev "${CUSTOM_INDEVS[@]}"
 
 ./configure \
   --cross-prefix="${HOST}-" \
@@ -580,13 +617,11 @@ done
   --enable-audiotoolbox \
   --enable-videotoolbox \
   ${CUSTOM_FLAGS} \
-  --enable-protocol=file \
   --enable-lto \
   --enable-libmp3lame \
   --enable-libopus \
   --enable-libvpx \
   --enable-libwebp \
-  --enable-indev=lavfi \
   --disable-i8mm \
   --disable-dotprod \
   ${CONFIGURE_POSTFIX} 1>>"${BASEDIR}"/build.log 2>&1
