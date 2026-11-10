@@ -526,6 +526,8 @@ CUSTOM_FILTERS=(
   null anull format aformat scale aresample
   trim atrim fps transpose hflip vflip rotate apad pan
   crop setsar split palettegen paletteuse loudnorm color
+  # go.mau.fi/util/ffmpeg/waveform (Viber voice messages)
+  showwavespic
 )
 CUSTOM_HWACCELS=(
   h263_videotoolbox h264_videotoolbox hevc_videotoolbox mpeg1_videotoolbox mpeg2_videotoolbox
